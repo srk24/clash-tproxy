@@ -4,6 +4,7 @@
 ###   1. 代理本地流量时需要使用 userclash 用户启动 clash
 
 echo "start set clash iptables..."
+echo "[WARN] Please start clash with uid is userclash!"
 
 # IP rules
 ip rule add fwmark 1 lookup 100
