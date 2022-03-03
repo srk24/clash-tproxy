@@ -1,5 +1,7 @@
 #!/bin/sh
 
+echo "start set clash iptables..."
+
 # IP rules
 ip rule add fwmark 1 lookup 100
 ip route add local 0.0.0.0/0 dev lo table 100
@@ -36,3 +38,5 @@ iptables -t nat -A TP_CLASH_DNS -p udp -m udp --dport 53 -j REDIRECT --to-ports 
 
 # 通过 nat/PREROUTING 转发给 TP_CLASH_DNS
 iptables -t nat -I PREROUTING -p udp -m udp --dport 53 -j TP_CLASH_DNS
+
+echo "set clash iptables done."
