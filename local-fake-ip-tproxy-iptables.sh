@@ -12,7 +12,7 @@ ip route add local 0.0.0.0/0 dev lo table 100
 iptables -t mangle -N TP_CLASH
 iptables -t mangle -F TP_CLASH
 
-# 将 clash fake ip pool 流量转发给clash
+# 将 clash fake ip pool 流量转发给 clash
 # iptables -t mangle -A TP_CLASH -p tcp -d 198.18.0.1/16 -j TPROXY --on-port 7893 --on-ip 0.0.0.0 --tproxy-mark 0x1/0x1
 # iptables -t mangle -A TP_CLASH -p udp -d 198.18.0.1/16 -j TPROXY --on-port 7893 --on-ip 0.0.0.0 --tproxy-mark 0x1/0x1
 
