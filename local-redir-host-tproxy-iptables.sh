@@ -34,10 +34,10 @@ iptables -t mangle -A TP_CLASH -p tcp -j TPROXY --on-port 7893 --on-ip 0.0.0.0 -
 iptables -t mangle -A TP_CLASH -p udp -j TPROXY --on-port 7893 --on-ip 0.0.0.0 --tproxy-mark 0x1/0x1
 
 # TCP/UDP 流量转发给 TP_CLASH
-iptables -t mangle -I PREROUTING -p tcp -j TP_CLASH
-iptables -t mangle -I PREROUTING -p udp -j TP_CLASH
-iptables -t mangle -I OUTPUT -p tcp -j TP_CLASH
-iptables -t mangle -I OUTPUT -p udp -j TP_CLASH
+iptables -t mangle -A PREROUTING -p tcp -j TP_CLASH
+iptables -t mangle -A PREROUTING -p udp -j TP_CLASH
+iptables -t mangle -A OUTPUT -p tcp -j TP_CLASH
+iptables -t mangle -A OUTPUT -p udp -j TP_CLASH
 
 iptables -t nat -N TP_CLASH_DNS
 iptables -t nat -F TP_CLASH_DNS
