@@ -12,6 +12,10 @@ ip route add local 0.0.0.0/0 dev lo table 100
 iptables -t mangle -N TP_CLASH
 iptables -t mangle -F TP_CLASH
 
+# 将 clash fake ip pool 流量转发给clash
+# iptables -t mangle -A TP_CLASH -p tcp -d 198.18.0.1/16 -j TPROXY --on-port 7893 --on-ip 0.0.0.0 --tproxy-mark 0x1/0x1
+# iptables -t mangle -A TP_CLASH -p udp -d 198.18.0.1/16 -j TPROXY --on-port 7893 --on-ip 0.0.0.0 --tproxy-mark 0x1/0x1
+
 # 局域网流量不做处理
 iptables -t mangle -A TP_CLASH -d 0.0.0.0/8 -j RETURN
 iptables -t mangle -A TP_CLASH -d 127.0.0.0/8 -j RETURN
@@ -52,7 +56,7 @@ iptables -t nat -I PREROUTING -p udp -m udp --dport 53 -j TP_CLASH_DNS
 iptables -t nat -I OUTPUT -p udp -m udp --dport 53 -j TP_CLASH_DNS
 
 # ICMP 流量 DNAT 到本地
-# iptables -t nat -A PREROUTING -p icmp -j DNAT --to-destination 127.0.0.1
-# iptables -t nat -A OUTPUT -p icmp -j DNAT --to-destination 127.0.0.1
+# iptables -t nat -A PREROUTING -d 198.18.0.0/16 -p icmp -j DNAT --to-destination 127.0.0.1
+# iptables -t nat -A OUTPUT -d 198.18.0.0/16 -p icmp -j DNAT --to-destination 127.0.0.1
 
 echo "set clash iptables done."
