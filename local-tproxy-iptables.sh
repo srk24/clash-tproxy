@@ -1,6 +1,7 @@
 #!/bin/sh
 
 ### 代理本地流量时需要使用 userclash 用户启动 clash
+echo "start set clash iptables..."
 
 # IP rules
 ip rule add fwmark 1 lookup 100
@@ -53,3 +54,5 @@ iptables -t nat -A PREROUTING -p icmp -j DNAT --to-destination 127.0.0.1
 
 # 本地发出的 ICMP 流量同样 DNAT 到本地
 iptables -t nat -A OUTPUT -p icmp -j DNAT --to-destination 127.0.0.1
+
+echo "set clash iptables done."
