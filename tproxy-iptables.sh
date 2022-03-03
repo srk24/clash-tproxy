@@ -4,9 +4,10 @@
 ip rule add fwmark 1 lookup 100
 ip route add local 0.0.0.0/0 dev lo table 100
 
-# 局域网流量不做处理
 iptables -t mangle -N TP_CLASH
 iptables -t mangle -F TP_CLASH
+
+# 局域网流量不做处理
 iptables -t mangle -A TP_CLASH -d 0.0.0.0/8 -j RETURN
 iptables -t mangle -A TP_CLASH -d 127.0.0.0/8 -j RETURN
 iptables -t mangle -A TP_CLASH -d 10.0.0.0/8 -j RETURN
@@ -27,9 +28,10 @@ iptables -t mangle -A TP_CLASH -p udp -j TPROXY --on-port 7893 --on-ip 0.0.0.0 -
 iptables -t mangle -I PREROUTING -p tcp -j TP_CLASH
 iptables -t mangle -I PREROUTING -p udp -j TP_CLASH
 
-# 对 DNS 流量 REDIRECT 到 Clash DNS 上
 iptables -t nat -N TP_CLASH_DNS
 iptables -t nat -F TP_CLASH_DNS
+
+# 对 DNS 流量 REDIRECT 到 Clash DNS 上
 iptables -t nat -A TP_CLASH_DNS -p udp -m udp --dport 53 -j REDIRECT --to-ports 1053
 
 # 通过 nat/PREROUTING 转发给 TP_CLASH_DNS
