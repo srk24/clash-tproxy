@@ -56,7 +56,7 @@ iptables -t nat -I PREROUTING -p udp -m udp --dport 53 -j TP_CLASH_DNS
 iptables -t nat -I OUTPUT -p udp -m udp --dport 53 -j TP_CLASH_DNS
 
 # ICMP 流量 DNAT 到本地
-# iptables -t nat -A PREROUTING -d 198.18.0.0/16 -p icmp -j DNAT --to-destination 127.0.0.1
-# iptables -t nat -A OUTPUT -d 198.18.0.0/16 -p icmp -j DNAT --to-destination 127.0.0.1
+iptables -t nat -I PREROUTING -d 198.18.0.0/16 -p icmp -j DNAT --to-destination 127.0.0.1
+iptables -t nat -I OUTPUT -d 198.18.0.0/16 -p icmp -j DNAT --to-destination 127.0.0.1
 
 echo "set clash iptables done."
