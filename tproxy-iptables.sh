@@ -23,14 +23,14 @@ iptables -t mangle -A TP_CLASH -p udp -m udp --dport 53 -j RETURN
 iptables -t mangle -A TP_CLASH -p tcp -j TPROXY --on-port 7893 --on-ip 0.0.0.0 --tproxy-mark 0x1/0x1
 iptables -t mangle -A TP_CLASH -p udp -j TPROXY --on-port 7893 --on-ip 0.0.0.0 --tproxy-mark 0x1/0x1
 
+# 通过 mangle/PREROUTING 转发给 TP_CLASH
+iptables -t mangle -I PREROUTING -p tcp -j TP_CLASH
+iptables -t mangle -I PREROUTING -p udp -j TP_CLASH
+
 # 对 DNS 流量 REDIRECT 到 Clash DNS 上
 iptables -t nat -N TP_CLASH_DNS
 iptables -t nat -F TP_CLASH_DNS
 iptables -t nat -A TP_CLASH_DNS -p udp -m udp --dport 53 -j REDIRECT --to-ports 1053
-
-# 通过 mangle/PREROUTING 转发给 TP_CLASH
-iptables -t mangle -I PREROUTING -p tcp -j TP_CLASH
-iptables -t mangle -I PREROUTING -p udp -j TP_CLASH
 
 # 通过 nat/PREROUTING 转发给 TP_CLASH_DNS
 iptables -t nat -I PREROUTING -p udp -m udp --dport 53 -j TP_CLASH_DNS
