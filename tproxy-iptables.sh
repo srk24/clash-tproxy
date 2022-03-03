@@ -29,8 +29,8 @@ iptables -t nat -F TP_CLASH_DNS_V4
 iptables -t nat -A TP_CLASH_DNS_V4 -p udp -m udp --dport 53 -j REDIRECT --to-ports 1053
 
 # 通过 mangle/PREROUTING 转发给 TP_CLASH_V4
-iptables -t mangle -A PREROUTING -p tcp -j TP_CLASH_V4
-iptables -t mangle -A PREROUTING -p udp -j TP_CLASH_V4
+iptables -t mangle -I PREROUTING -p tcp -j TP_CLASH_V4
+iptables -t mangle -I PREROUTING -p udp -j TP_CLASH_V4
 
 # 通过 nat/PREROUTING 转发给 TP_CLASH_DNS_V4
 iptables -t nat -I PREROUTING -p udp -m udp --dport 53 -j TP_CLASH_DNS_V4
