@@ -28,7 +28,8 @@ iptables -t mangle -A TP_CLASH -p tcp -j TPROXY --on-port 7893 --tproxy-mark 1
 iptables -t mangle -A TP_CLASH -p udp -j TPROXY --on-port 7893 --tproxy-mark 1
 
 # redirect
-iptables -t mangle -A PREROUTING -j TP_CLASH
+iptables -t mangle -A PREROUTING -p tcp -j TP_CLASH
+iptables -t mangle -A PREROUTING -p udp -j TP_CLASH
 
 # init TP_CLASH_DNS
 iptables -t nat -N TP_CLASH_DNS
@@ -71,7 +72,8 @@ iptables -t mangle -A TP_CLASH_LOCAL -p tcp -j MARK --set-xmark 1
 iptables -t mangle -A TP_CLASH_LOCAL -p udp -j MARK --set-xmark 1
 
 # redirect
-iptables -t mangle -A OUTPUT -j TP_CLASH_LOCAL
+iptables -t mangle -A OUTPUT -p tcp -j TP_CLASH_LOCAL
+iptables -t mangle -A OUTPUT -p udp -j TP_CLASH_LOCAL
 
 # init TP_CLASH_DNS
 iptables -t nat -N TP_CLASH_DNS_LOCAL
