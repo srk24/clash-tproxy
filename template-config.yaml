@@ -12,6 +12,7 @@ routing-mark: 9
 profile:
   store-selected: true
   store-fake-ip: true
+
 dns:
   enable: true
   listen: 0.0.0.0:1053
