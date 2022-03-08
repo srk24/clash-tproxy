@@ -64,13 +64,13 @@ iptables -t mangle -A TP_CLASH_LOCAL -d 169.254.0.0/16 -j RETURN
 iptables -t mangle -A TP_CLASH_LOCAL -d 224.0.0.0/4 -j RETURN
 iptables -t mangle -A TP_CLASH_LOCAL -d 240.0.0.0/4 -j RETURN
 
-# Clash 自己的流量不做处理
+# prevent clash loopback
 iptables -t mangle -A TP_CLASH_LOCAL -m owner --uid-owner userclash -j RETURN
 
-# 跳过 DNS 流量, 由后面的 NAT 表做 REDIRECT
+# prevent dns direct
 iptables -t mangle -A TP_CLASH_LOCAL -p udp --dport 53 -j RETURN
 
-# 其他 TCP/UDP 流量打 MARK 重新路由
+# tproxy mark
 iptables -t mangle -A TP_CLASH_LOCAL -p tcp -j MARK --set-xmark 1
 iptables -t mangle -A TP_CLASH_LOCAL -p udp -j MARK --set-xmark 1
 
