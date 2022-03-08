@@ -7,7 +7,7 @@ log-level: info
 ipv6: false
 external-controller: 127.0.0.1:9090
 external-ui: ./ui
-routing-mark: 6666
+routing-mark: 9
 
 profile:
   store-selected: true
