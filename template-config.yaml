@@ -1,7 +1,7 @@
 mixed-port: 7890
 tproxy-port: 7893
 allow-lan: true
-bind-address: '*'
+bind-address: "*"
 mode: rule
 log-level: info
 ipv6: false
@@ -12,7 +12,6 @@ routing-mark: 9
 profile:
   store-selected: true
   store-fake-ip: true
-
 dns:
   enable: true
   listen: 0.0.0.0:1053
@@ -20,10 +19,21 @@ dns:
   enhanced-mode: fake-ip # redir-host or fake-ip
   fake-ip-range: 198.18.0.1/16
   fake-ip-filter:
-    - '*.lan'
-    - localhost.ptlogin2.qq.com
+    - "*.lan"
+    - "*.local"
+    - "+.stun.*.*"
+    - "+.stun.*.*.*"
+    - "+.stun.*.*.*.*"
+    - "+.srv.nintendo.net"
+    - "+.stun.playstation.net"
+    - "xbox.*.microsoft.com"
+    - "+.xboxlive.com"
+    - "localhost.ptlogin2.qq.com"
+    - "+.msftconnecttest.com"
+    - "+.msftncsi.com"
+    - "*.mcdn.bilivideo.cn"
   nameserver:
     - tls://223.5.5.5
   nameserver-policy:
-    '+.taobao.com': '223.5.5.5'
-    '+.qq.com': '119.29.29.29'
+    "+.taobao.com": "223.5.5.5"
+    "+.qq.com": "119.29.29.29"
