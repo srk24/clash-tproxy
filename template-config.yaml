@@ -21,6 +21,7 @@ dns:
   fake-ip-filter:
     - '*.lan'
     - '*.local'
+    - '+.ntp.*.*'
     - '+.stun.*.*'
     - '+.srv.nintendo.net'
     - '+.stun.playstation.net'
@@ -30,6 +31,10 @@ dns:
     - 'localhost.ptlogin2.qq.com'
     - '+.msftconnecttest.com'
     - '+.msftncsi.com'
+    - '+.nflxvideo.net'
+    - '*.square-enix.com'
+    - '*.finalfantasyxiv.com'
+    - '*.ffxiv.com'
     - '*.mcdn.bilivideo.cn'
   nameserver:
     - tls://223.5.5.5
