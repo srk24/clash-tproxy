@@ -1,0 +1,23 @@
+## vim /etc/network/interfaces
+
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+source /etc/network/interfaces.d/*
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+auto br0
+iface br0 inet static
+  address 192.168.1.100
+  broadcast 192.168.1.255
+  netmask 255.255.255.0
+  gateway 192.168.1.1
+  bridge_ports enp1s0 enp2s0 enp4s0 eno1
+  post-up ip rule add fwmark 1 lookup 100
+  post-up ip route add local 0.0.0.0/0 dev lo table 100
+  pre-down ip route delete local 0.0.0.0/0 dev lo table 100
+  pre-down ip rule delete fwmark 1 lookup 100

@@ -41,8 +41,7 @@ table ip clash {
 
         ip protocol != { tcp, udp } accept
 
-        udp dport != 53 accept
-        tcp dport != 53 accept
+        mark 7777 accept
 
         udp dport 53 redirect to :1053
         tcp dport 53 redirect to :1053
@@ -53,8 +52,7 @@ table ip clash {
 
         ip protocol != { tcp, udp } accept
 
-        udp dport != 53 accept
-        tcp dport != 53 accept
+        mark 7777 accept
 
         udp dport 53 redirect to :1053
         tcp dport 53 redirect to :1053

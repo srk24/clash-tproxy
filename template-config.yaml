@@ -1,44 +1,64 @@
 mixed-port: 7890
 tproxy-port: 7893
 allow-lan: true
-bind-address: '*'
-mode: rule
-log-level: info
-ipv6: false
+bind-address: "*"
 external-controller: 0.0.0.0:9090
-external-ui: ./ui
-routing-mark: 9
-
+external-ui: ./clash-dashboard
+ipv6: false
+log-level: info
+mode: rule
+routing-mark: 7777
 profile:
+  tracing: true
   store-selected: true
   store-fake-ip: true
+
+# interface-name: br0
+# ebpf:
+#   redirect-to-tun:
+#     - br0
+# tun:
+#   enable: true
+#   stack: system
+#   dns-hijack:
+#     - any:53
+#     - tcp://any:53
 
 dns:
   enable: true
   listen: 0.0.0.0:1053
-  ipv6: false
-  enhanced-mode: fake-ip # redir-host or fake-ip
+  enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
   fake-ip-filter:
-    - '*.lan'
-    - '*.local'
-    - '+.ntp.*.*'
-    - '+.stun.*.*'
-    - '+.srv.nintendo.net'
-    - '+.stun.playstation.net'
-    - 'xbox.*.microsoft.com'
-    - '+.xboxlive.com'
-    - '.ipv6.microsoft.com'
-    - 'localhost.ptlogin2.qq.com'
-    - '+.msftconnecttest.com'
-    - '+.msftncsi.com'
-    - '+.nflxvideo.net'
-    - '*.square-enix.com'
-    - '*.finalfantasyxiv.com'
-    - '*.ffxiv.com'
-    - '*.mcdn.bilivideo.cn'
+    - "*.lan"
+    - "*.local"
+    - "+.ntp.*.*"
+    - "+.stun.*.*"
+    - "+.stun.*.*.*"
+    - "+.stun.*.*.*.*"
+    - "+.stun.*.*.*.*.*"
+    - "+.srv.nintendo.net"
+    - "+.stun.playstation.net"
+    - "xbox.*.*.microsoft.com"
+    - "+.xboxlive.com"
+    - "+.microsoft.com"
+    - "+.msftconnecttest.com"
+    - "+.msftncsi.com"
+    - "in.appcenter.ms"
+    - "+.msn.com"
+    - "+.nflxvideo.net"
+    - "*.square-enix.com"
+    - "*.finalfantasyxiv.com"
+    - "*.ffxiv.com"
+    - "*.mcdn.bilivideo.cn"
+    - "localhost.sec.qq.com"
+    - "localhost.ptlogin2.qq.com"
   nameserver:
-    - tls://223.5.5.5
+    - 119.29.29.29
+    - 223.5.5.5
+    # - dhcp://enp1s0
+    # - tls://1.12.12.12
+    # - https://1.12.12.12/dns-query
   nameserver-policy:
-    '+.taobao.com': '223.5.5.5'
-    '+.qq.com': '119.29.29.29'
+    "+.taobao.com": "223.5.5.5"
+    "+.qq.com": "119.29.29.29"
