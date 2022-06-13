@@ -1,23 +1,16 @@
 #!/usr/sbin/nft -f
 
-table ip TP_CLASH
-flush table TP_CLASH
+# 保留 IP 参考 https://en.wikipedia.org/wiki/Reserved_IP_addresses
+define BYPASS_IPV4 = {0.0.0.0/8, 127.0.0.0/8, 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, 169.254.0.0/16, 224.0.0.0/4, 240.0.0.0/4}
 
 # 只做了 ipv4
 table ip TP_CLASH {
-
-    # 保留 IP 参考 https://en.wikipedia.org/wiki/Reserved_IP_addresses
-    set bypass4 {
-        type ipv4_addr
-        flags interval
-        elements = {0.0.0.0/8, 127.0.0.0/8, 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, 169.254.0.0/16, 224.0.0.0/4, 240.0.0.0/4}
-    }
 
     chain local {
         type route hook output priority 0; policy accept;
 
         ip protocol != { tcp, udp } accept
-        ip daddr @bypass4 accept
+        ip daddr $BYPASS_IPV4 accept
         ip dport 53 return
 
         mark 0x1e61 accept
@@ -29,7 +22,7 @@ table ip TP_CLASH {
         type filter hook prerouting priority 0; policy accept;
 
         ip protocol != { tcp, udp } accept
-        ip daddr @bypass4 accept
+        ip daddr $BYPASS_IPV4 accept
         ip dport 53 return
 
         mark 0x1e61 accept
