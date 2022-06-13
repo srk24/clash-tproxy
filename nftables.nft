@@ -1,48 +1,48 @@
 #!/usr/sbin/nft -f
 
 # 保留 IP 参考 https://en.wikipedia.org/wiki/Reserved_IP_addresses
-define BYPASS_IPV4 = {0.0.0.0/8, 127.0.0.0/8, 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, 169.254.0.0/16, 224.0.0.0/4, 240.0.0.0/4}
+define LANv4 = {0.0.0.0/8, 127.0.0.0/8, 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, 169.254.0.0/16, 224.0.0.0/4, 240.0.0.0/4}
 
 # 只做了 ipv4
-table ip TP_CLASH {
-
+table ip clash {
+ 
     chain local {
-        type route hook output priority 0; policy accept;
+        type route hook output priority mangle; policy accept;
 
         ip protocol != { tcp, udp } accept
-        ip daddr $BYPASS_IPV4 accept
-        ip dport 53 return
+        ip daddr $LANv4 accept
 
         mark 0x1e61 accept
 
-        ip protocol {tcp, udp} mark set 0x1
+        udp dport 53 return
+        tcp dport 53 return
+
+        ip protocol { tcp, udp } mark set 0x1
     }
 
     chain forward {
-        type filter hook prerouting priority 0; policy accept;
+        type filter hook prerouting priority mangle; policy accept;
 
         ip protocol != { tcp, udp } accept
-        ip daddr $BYPASS_IPV4 accept
-        ip dport 53 return
+        ip daddr $LANv4 accept
 
         mark 0x1e61 accept
 
-        ip protocol {tcp, udp} mark set 0x1 tproxy to :7893
+        udp dport 53 return
+        tcp dport 53 return
+
+        ip protocol { tcp, udp } mark set 0x1 tproxy to :7893
     }
 
     chain local-dns-redirect {
         type nat hook output priority 0; policy accept;
-
-        ip protocol != { tcp, udp } accept
 
         udp dport 53 redirect to :1053
         tcp dport 53 redirect to :1053
     }
 
     chain forward-dns-redirect {
-        type nat hook prerouting priority 0; policy accept;
-
-        ip protocol != { tcp, udp } accept
+        type nat hook prerouting priority dstnat; policy accept;
 
         udp dport 53 redirect to :1053
         tcp dport 53 redirect to :1053
