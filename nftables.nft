@@ -35,9 +35,6 @@ table ip clash {
 
         meta mark 7777 accept
 
-        meta l4proto tcp # socket counter packets 1066 bytes 1565808 jump DIVERT
-        meta l4proto tcp # socket counter packets 1509 bytes 161305 jump DIVERT
-
         ip protocol { tcp, udp } mark set 1
     }
 
@@ -80,6 +77,4 @@ table ip clash {
         udp dport 53 redirect to :1053
         tcp dport 53 redirect to :1053
     }
-
 }
-
