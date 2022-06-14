@@ -51,7 +51,7 @@ table ip clash {
         meta mark 7777 accept
 
         # DIVERT 规则
-        meta l4proto tcp socket transparent 1 meta mark set 1 accept
+        socket transparent 1 mark set 1 accept
 
         ip protocol { tcp, udp } mark set 1 tproxy to :7893
     }
