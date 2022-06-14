@@ -33,7 +33,10 @@ table ip clash {
 
         ip daddr $LANv4 accept
 
-        mark 7777 accept
+        meta mark 7777 accept
+
+        meta l4proto tcp # socket counter packets 1066 bytes 1565808 jump DIVERT
+        meta l4proto tcp # socket counter packets 1509 bytes 161305 jump DIVERT
 
         ip protocol { tcp, udp } mark set 1
     }
@@ -48,7 +51,10 @@ table ip clash {
 
         ip daddr $LANv4 accept
 
-        mark 7777 accept
+        meta mark 7777 accept
+
+        # DIVERT 规则
+        meta l4proto tcp socket transparent 1 meta mark set 1 accept
 
         ip protocol { tcp, udp } mark set 1 tproxy to :7893
     }
@@ -58,7 +64,7 @@ table ip clash {
 
         ip protocol != { tcp, udp } accept
 
-        mark 7777 accept
+        meta mark 7777 accept
 
         udp dport 53 redirect to :1053
         tcp dport 53 redirect to :1053
@@ -69,9 +75,11 @@ table ip clash {
 
         ip protocol != { tcp, udp } accept
 
-        mark 7777 accept
+        meta mark 7777 accept
 
         udp dport 53 redirect to :1053
         tcp dport 53 redirect to :1053
     }
+
 }
+
